@@ -1,14 +1,173 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Cadastrar Paciente</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Paciente - Clínica OdontoCare</title>
+
+    <style>
+        /* Layout geral da página */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Estilização do menu de navegação */
+        nav {
+            background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradiente do menu */
+            padding: 15px 0;
+            position: relative;
+        }
+
+        nav .logo {
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            float: left;
+            margin-left: 50px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            float: right;
+            margin-right: 50px;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffd700; /* Cor de hover no link */
+        }
+
+        /* Header com gradiente e estilo de título centralizado */
+        header {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            padding: 100px 0;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 40px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        /* Formulário de cadastro */
+        .form-container {
+            margin: 50px auto;
+            width: 40%;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .form-container h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .form-container label {
+            display: block;
+            text-align: left;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-container button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #FF4081;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #d13669;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
 </head>
 <body>
-    <h2>Cadastrar Paciente</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Cadastrar</button>
-    </form>
+
+    <!-- Menu de navegação -->
+    <nav>
+        <div class="logo">ODONTO SORRIR</div>
+        <ul>
+            <li><a href="{% url 'home' %}">VISUALIZAR</a></li>
+            <li><a href="excluir">EXCLUIR</a></li>
+            <li><a href="#calendario">CALENDÁRIO</a></li>
+            <li><a href="#clients">CLIENTS</a></li>
+            <li><a href="#work">WORK</a></li>
+            <li><a href="#statistics">STATISTICS</a></li>
+            <li><a href="#blog">BLOG</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Cadastrar Paciente</h1>
+    </header>
+
+    <!-- Formulário de cadastro de paciente -->
+    <div class="form-container">
+        <h2>Insira os Dados do Paciente</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" placeholder="Digite o nome do paciente" required>
+
+            <label for="contato">Contato:</label>
+            <input type="text" id="contato" name="contato" placeholder="Digite o número de contato" required>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>Clínica OdontoCare &copy; 2024</p>
+    </footer>
+
 </body>
 </html>

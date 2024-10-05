@@ -1,18 +1,189 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Visualizar Pacientes</title>
+    <title>Home - Clínica OdontoCare</title>
+
+    <style>
+        /* Layout geral da página */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Estilização do menu de navegação */
+        nav {
+            background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradiente do menu */
+            padding: 15px 0;
+            position: relative;
+        }
+
+        nav .logo {
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            float: left;
+            margin-left: 50px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            float: right;
+            margin-right: 50px;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffd700; /* Cor de hover no link */
+        }
+
+        /* Header com gradiente e estilo de título centralizado */
+        header {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            padding: 100px 0;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 50px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        /* Seção de boas-vindas com botão */
+        .welcome {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Botão estilizado */
+        .visualizar-btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #FF4081;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .visualizar-btn:hover {
+            background-color: #d13669;
+        }
+
+        /* Área de pacientes, oculta inicialmente */
+        #lista-pacientes {
+            display: none; /* Mantém oculto inicialmente */
+            margin: 40px auto;
+            width: 80%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px 0;
+            font-size: 18px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+
+    <script>
+        // Função para alternar entre mostrar e esconder os pacientes
+        function togglePacientes() {
+            const listaPacientes = document.getElementById('lista-pacientes');
+            const botao = document.getElementById('botao-visualizar');
+
+            if (listaPacientes.style.display === "none" || listaPacientes.style.display === "") {
+                // Mostrar a lista de pacientes
+                listaPacientes.style.display = "block";
+                botao.textContent = "Esconder";
+            } else {
+                // Esconder a lista de pacientes
+                listaPacientes.style.display = "none";
+                botao.textContent = "Visualizar";
+            }
+        }
+
+        // Adiciona o evento no botão assim que a página for carregada
+        window.onload = function() {
+            const botao = document.getElementById('botao-visualizar');
+            botao.addEventListener('click', togglePacientes);
+        };
+    </script>
 </head>
 <body>
-    <h1>Olá, Andrea</h1>
+    <!-- Menu de navegação -->
+    <nav>
+        <div class="logo">ODONTO SORRIR</div>
+        <ul>
+            <li><a href="{% url 'cadastrar_paciente' %}">CADASTRAR</a></li>
+            <li><a href="#excluir">EXCLUIR</a></li>
+            <li><a href="#calendario">CALENDÁRIO</a></li>
+            <li><a href="#clients">CLIENTS</a></li>
+            <li><a href="#work">WORK</a></li>
+            <li><a href="#statistics">STATISTICS</a></li>
+            <li><a href="#blog">BLOG</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+        </ul>
+    </nav>
 
-    <!-- Botão para alternar a exibição dos pacientes -->
-    <button id="botao-visualizar">Visualizar</button>
+    <header>
+        <h1>Olá, Andrea</h1>
+    </header>
 
-    <!-- Lista de pacientes, inicialmente escondida -->
-    <div id="lista-pacientes" class="hidden">
+    <div class="welcome">
+        <!-- Botão para visualizar ou esconder os pacientes -->
+        <button class="visualizar-btn" id="botao-visualizar">Visualizar</button>
+    </div>
+
+    <!-- Lista de pacientes inicialmente oculta -->
+    <div id="lista-pacientes">
         <h2>Pacientes cadastrados:</h2>
         <ul>
             {% for paciente in pacientes %}
@@ -23,33 +194,8 @@
         </ul>
     </div>
 
-    <script>
-        // Função para alternar entre exibir e esconder pacientes
-        function togglePacientes() {
-            const listaPacientes = document.getElementById('lista-pacientes');
-            const botao = document.getElementById('botao-visualizar');
-
-            if (listaPacientes.classList.contains('hidden')) {
-                listaPacientes.classList.remove('hidden');
-                botao.textContent = 'Esconder';
-            } else {
-                listaPacientes.classList.add('hidden');
-                botao.textContent = 'Visualizar';
-            }
-        }
-
-        // Certificar-se de que a página carregou antes de adicionar o evento
-        window.onload = function() {
-            const botao = document.getElementById('botao-visualizar');
-            botao.addEventListener('click', togglePacientes);
-        }
-    </script>
-
-    <style>
-        /* Esconder a lista inicialmente */
-        .hidden {
-            display: none;
-        }
-    </style>
+    <footer>
+        <p>Clínica OdontoCare &copy; 2024</p>
+    </footer>
 </body>
 </html>

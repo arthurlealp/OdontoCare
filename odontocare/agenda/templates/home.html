@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Visualizar Pacientes</title>
+</head>
+<body>
+    <h1>Olá, Andrea</h1>
+
+    <!-- Botão para alternar a exibição dos pacientes -->
+    <button id="botao-visualizar">Visualizar</button>
+
+    <!-- Lista de pacientes, inicialmente escondida -->
+    <div id="lista-pacientes" class="hidden">
+        <h2>Pacientes cadastrados:</h2>
+        <ul>
+            {% for paciente in pacientes %}
+                <li>{{ paciente.nome }} - {{ paciente.contato }}</li>
+            {% empty %}
+                <li>Nenhum paciente cadastrado.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        // Função para alternar entre exibir e esconder pacientes
+        function togglePacientes() {
+            const listaPacientes = document.getElementById('lista-pacientes');
+            const botao = document.getElementById('botao-visualizar');
+
+            if (listaPacientes.classList.contains('hidden')) {
+                listaPacientes.classList.remove('hidden');
+                botao.textContent = 'Esconder';
+            } else {
+                listaPacientes.classList.add('hidden');
+                botao.textContent = 'Visualizar';
+            }
+        }
+
+        // Certificar-se de que a página carregou antes de adicionar o evento
+        window.onload = function() {
+            const botao = document.getElementById('botao-visualizar');
+            botao.addEventListener('click', togglePacientes);
+        }
+    </script>
+
+    <style>
+        /* Esconder a lista inicialmente */
+        .hidden {
+            display: none;
+        }
+    </style>
+</body>
+</html>

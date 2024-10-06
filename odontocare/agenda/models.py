@@ -2,11 +2,10 @@ from django.db import models
 
 # Modelo que representa um paciente
 class Paciente(models.Model):
-    nome = models.CharField(max_length=100)  # Nome do paciente
-    contato = models.CharField(max_length=15)  # Contato do paciente
-
-    def __str__(self):
-        return self.nome
+    nome = models.CharField(max_length=100)
+    email = models.EmailField(null=True, blank=True)
+    cpf = models.CharField(max_length=14, null=True, blank=True)  # Permitir valores nulos
+    telefone = models.CharField(max_length=15, null=True, blank=True)
 
 # Modelo que representa uma consulta
 class Consulta(models.Model):

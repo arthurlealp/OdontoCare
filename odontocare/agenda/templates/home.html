@@ -14,9 +14,8 @@
             background-color: #f4f4f4;
         }
 
-        /* Estilização do menu de navegação */
         nav {
-            background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradiente do menu */
+            background: linear-gradient(to right, #6a11cb, #2575fc);
             padding: 15px 0;
             position: relative;
         }
@@ -52,10 +51,9 @@
         }
 
         nav ul li a:hover {
-            color: #ffd700; /* Cor de hover no link */
+            color: #ffd700;
         }
 
-        /* Header com gradiente e estilo de título centralizado */
         header {
             background: linear-gradient(to right, #6a11cb, #2575fc);
             padding: 100px 0;
@@ -69,13 +67,11 @@
             margin: 0;
         }
 
-        /* Seção de boas-vindas com botão */
         .welcome {
             margin-top: 20px;
             text-align: center;
         }
 
-        /* Botão estilizado */
         .visualizar-btn {
             padding: 15px 30px;
             font-size: 18px;
@@ -92,22 +88,22 @@
             background-color: #d13669;
         }
 
-        /* Área de pacientes, oculta inicialmente */
         #lista-pacientes {
-            display: none; /* Mantém oculto inicialmente */
+            display: none;
             margin: 40px auto;
             width: 80%;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            text-align: center;
+            text-align: left;
         }
 
         h2 {
             color: #333;
             font-size: 28px;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         ul {
@@ -119,10 +115,26 @@
             padding: 10px 0;
             font-size: 18px;
             border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         li:last-child {
             border-bottom: none;
+        }
+
+        .patient-details {
+            margin-left: 10px;
+        }
+
+        .patient-details span {
+            font-weight: bold;
+        }
+
+        .trash-icon {
+            cursor: pointer;
+            color: #ff0000;
         }
 
         footer {
@@ -134,23 +146,19 @@
     </style>
 
     <script>
-        // Função para alternar entre mostrar e esconder os pacientes
         function togglePacientes() {
             const listaPacientes = document.getElementById('lista-pacientes');
             const botao = document.getElementById('botao-visualizar');
 
             if (listaPacientes.style.display === "none" || listaPacientes.style.display === "") {
-                // Mostrar a lista de pacientes
                 listaPacientes.style.display = "block";
                 botao.textContent = "Esconder";
             } else {
-                // Esconder a lista de pacientes
                 listaPacientes.style.display = "none";
                 botao.textContent = "Visualizar";
             }
         }
 
-        // Adiciona o evento no botão assim que a página for carregada
         window.onload = function() {
             const botao = document.getElementById('botao-visualizar');
             botao.addEventListener('click', togglePacientes);
@@ -158,7 +166,6 @@
     </script>
 </head>
 <body>
-    <!-- Menu de navegação -->
     <nav>
         <div class="logo">ODONTO SORRIR</div>
         <ul>
@@ -178,16 +185,24 @@
     </header>
 
     <div class="welcome">
-        <!-- Botão para visualizar ou esconder os pacientes -->
         <button class="visualizar-btn" id="botao-visualizar">Visualizar</button>
     </div>
 
-    <!-- Lista de pacientes inicialmente oculta -->
     <div id="lista-pacientes">
         <h2>Pacientes cadastrados:</h2>
         <ul>
             {% for paciente in pacientes %}
-                <li>{{ paciente.nome }} - {{ paciente.contato }}</li>
+                <li>
+                    <div class="patient-details">
+                        <p><span>Nome:</span> {{ paciente.nome }}</p>
+                        <p><span>E-mail:</span> {{ paciente.email }}</p>
+                        <p><span>CPF:</span> {{ paciente.cpf }}</p>
+                        <p><span>Telefone:</span> {{ paciente.telefone }}</p>
+                    </div>
+                    <span class="trash-icon">
+                        🗑️
+                    </span>
+                </li>
             {% empty %}
                 <li>Nenhum paciente cadastrado.</li>
             {% endfor %}

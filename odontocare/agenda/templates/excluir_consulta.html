@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excluir Consulta</title>
+
+    {% load static %}
+    
+</head>
+<body>
+    <h1>Tem certeza que deseja excluir a consulta?</h1>
+
+    <p>Paciente: {{ consulta.paciente.nome }}</p>
+    <p>Data: {{ consulta.data }}</p>
+    <p>Hora: {{ consulta.hora }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Confirmar Exclusão</button>
+    </form>
+
+    <a href="{% url 'lista_consultas' %}">Cancelar</a>
+</body>
+</html>

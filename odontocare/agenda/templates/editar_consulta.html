@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Paciente - Clínica OdontoCare</title>
+    <title>Editar Consulta</title>
+
+    {% load static %}
 
     <style>
-        /* Layout geral da página */
+        /* Estilo padrão da página */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -14,9 +16,8 @@
             background-color: #f4f4f4;
         }
 
-        /* Estilização do menu de navegação */
         nav {
-            background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradiente do menu */
+            background: linear-gradient(to right, #6a11cb, #2575fc);
             padding: 15px 0;
             position: relative;
         }
@@ -52,10 +53,9 @@
         }
 
         nav ul li a:hover {
-            color: #ffd700; /* Cor de hover no link */
+            color: #ffd700;
         }
 
-        /* Header com gradiente e estilo de título centralizado */
         header {
             background: linear-gradient(to right, #6a11cb, #2575fc);
             padding: 100px 0;
@@ -64,47 +64,49 @@
         }
 
         header h1 {
-            font-size: 40px;
+            font-size: 50px;
             font-weight: bold;
             margin: 0;
         }
 
-        /* Formulário de cadastro */
-        .form-container {
-            margin: 50px auto;
-            width: 40%;
+        .container {
+            margin: 40px auto;
+            width: 80%;
             background-color: white;
-            padding: 30px;
             border-radius: 10px;
             box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            padding: 20px;
+            text-align: left;
         }
 
-        .form-container h2 {
+        h2 {
             color: #333;
             font-size: 28px;
             margin-bottom: 20px;
+            text-align: center;
         }
 
-        .form-container label {
-            display: block;
-            text-align: left;
-            margin-bottom: 10px;
-            font-size: 16px;
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
             font-weight: bold;
-            color: #555;
+            margin-bottom: 5px;
         }
 
-        .form-container input[type="text"], .form-container input[type="email"] {
-            width: 100%;
+        input, select, textarea {
             padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
             font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        .form-container button {
+        .btn-submit {
             padding: 15px 30px;
             font-size: 18px;
             background-color: #FF4081;
@@ -114,10 +116,28 @@
             cursor: pointer;
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
             transition: background 0.3s ease;
+            margin-top: 20px;
+            width: fit-content;
+            align-self: center;
         }
 
-        .form-container button:hover {
+        .btn-submit:hover {
             background-color: #d13669;
+        }
+
+        .link-back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .link-back a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        .link-back a:hover {
+            text-decoration: underline;
         }
 
         footer {
@@ -127,26 +147,14 @@
             color: #777;
         }
     </style>
-
-    <!-- Adicionando máscara de CPF e Telefone com jQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            $('input[name="cpf"]').mask('000.000.000-00');
-            $('input[name="telefone"]').mask('(00) 00000-0000');
-        });
-    </script>
 </head>
 <body>
-
-    <!-- Menu de navegação -->
     <nav>
         <div class="logo">ODONTO SORRIR</div>
         <ul>
             <li><a href="{% url 'home' %}">INÍCIO</a></li>
             <li><a href="{% url 'cadastrar_paciente' %}">CADASTRAR</a></li>
-            <li><a href="{% url 'lista_consultas' %}">CONSULTAS</a></li> <!-- URL corrigida -->
+            <li><a href="{% url 'lista_consultas' %}">CONSULTAS</a></li>
             <li><a href="#clients">CLIENTES</a></li>
             <li><a href="#work">WORK</a></li>
             <li><a href="#statistics">STATISTICS</a></li>
@@ -156,23 +164,46 @@
     </nav>
 
     <header>
-        <h1>Cadastrar Paciente</h1>
+        <h1>Editar Consulta</h1>
     </header>
 
-    <!-- Formulário de cadastro de paciente -->
-    <div class="form-container">
-        <h2>Insira os Dados do Paciente</h2>
-
+    <div class="container">
+        <h2>Atualize os dados da consulta</h2>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Cadastrar</button>
+            <label for="paciente">Paciente:</label>
+            <select id="paciente" name="paciente">
+                {% for paciente in pacientes %}
+                    <option value="{{ paciente.id }}" {% if paciente.id == consulta.paciente.id %}selected{% endif %}>{{ paciente.nome }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" value="{{ consulta.data|date:'Y-m-d' }}">
+
+            <label for="hora">Hora:</label>
+            <input type="time" id="hora" name="hora" value="{{ consulta.hora|time:'H:i' }}">
+
+            <label for="motivo">Motivo:</label>
+            <textarea id="motivo" name="motivo" rows="4">{{ consulta.motivo }}</textarea>
+
+            <label for="status">Status:</label>
+            <select id="status" name="status">
+                <option value="Agendado" {% if consulta.status == 'Agendado' %}selected{% endif %}>Agendado</option>
+                <option value="Cancelado" {% if consulta.status == 'Cancelado' %}selected{% endif %}>Cancelado</option>
+                <option value="Concluído" {% if consulta.status == 'Concluído' %}selected{% endif %}>Concluído</option>
+            </select>
+
+            <button type="submit" class="btn-submit">Salvar Alterações</button>
         </form>
+
+        <div class="link-back">
+            <a href="{% url 'lista_consultas' %}">Voltar para a lista de consultas</a>
+        </div>
     </div>
 
     <footer>
         <p>Clínica OdontoCare &copy; 2024</p>
     </footer>
-
 </body>
 </html>

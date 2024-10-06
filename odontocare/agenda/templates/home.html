@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -159,6 +159,27 @@
             }
         }
 
+        function confirmarExclusao(pacienteId) {
+            var confirmar = confirm("Tem certeza que deseja excluir este paciente?");
+            if (confirmar) {
+                // Faz uma requisição AJAX para excluir o paciente
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/paciente/excluir/" + pacienteId + "/", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');  // Incluir o token CSRF
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Se a exclusão for bem-sucedida, remover o elemento da lista
+                        var pacienteItem = document.getElementById("paciente-" + pacienteId);
+                        pacienteItem.remove();
+                    } else {
+                        alert("Erro ao excluir paciente.");
+                    }
+                };
+                xhr.send();
+            }
+        }
+
         window.onload = function() {
             const botao = document.getElementById('botao-visualizar');
             botao.addEventListener('click', togglePacientes);
@@ -169,10 +190,10 @@
     <nav>
         <div class="logo">ODONTO SORRIR</div>
         <ul>
+            <li><a href="{% url 'home' %}">INÍCIO</a></li>
             <li><a href="{% url 'cadastrar_paciente' %}">CADASTRAR</a></li>
-            <li><a href="#excluir">EXCLUIR</a></li>
-            <li><a href="#calendario">CALENDÁRIO</a></li>
-            <li><a href="#clients">CLIENTS</a></li>
+            <li><a href="{% url 'lista_consultas' %}">CONSULTAS</a></li> <!-- URL corrigida -->
+            <li><a href="#clients">CLIENTES</a></li>
             <li><a href="#work">WORK</a></li>
             <li><a href="#statistics">STATISTICS</a></li>
             <li><a href="#blog">BLOG</a></li>
@@ -192,14 +213,14 @@
         <h2>Pacientes cadastrados:</h2>
         <ul>
             {% for paciente in pacientes %}
-                <li>
+                <li id="paciente-{{ paciente.id }}">
                     <div class="patient-details">
                         <p><span>Nome:</span> {{ paciente.nome }}</p>
                         <p><span>E-mail:</span> {{ paciente.email }}</p>
                         <p><span>CPF:</span> {{ paciente.cpf }}</p>
                         <p><span>Telefone:</span> {{ paciente.telefone }}</p>
                     </div>
-                    <span class="trash-icon">
+                    <span class="trash-icon" onclick="confirmarExclusao({{ paciente.id }});">
                         🗑️
                     </span>
                 </li>
